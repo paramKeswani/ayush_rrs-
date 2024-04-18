@@ -7,66 +7,12 @@ def most_popular_cuisines(df3,c):
   return fig
 
 
-def rest_per_area(df):
-  per_area = df[['state', 'State_area']]
-  state = df['state'].unique()
-  l = per_area['state'].value_counts()
-  dic = {}
-  for i in state:
-    n = l[i]
-    ar = df[df.state == i]['State_area']
-    for z in ar:
-      area = z
-    a = n / area
-    dic[i] = a
-  perc = [i for i in dic.values()]
-  fig = px.bar(x=list(dic.keys()), y=list(perc),
-               labels={'x': 'State', 'y': "Count per Area"})
-  fig.update_layout(xaxis={'categoryorder':'total descending'})
-  return fig
 
 
-def most_popular_chain(df):
-  chain = df['name'].value_counts().head(20)
-  fig = px.bar(x=chain.index, y=chain, labels={'x': 'Restaurant Chain', 'y': 'No. of Outlets'})
-  return fig
 
 
-def state_wise(df,state):
-  state_df = df[df.state == state]
-  s = state_df['city'].value_counts()
-  fig = px.bar(x=s.index, y=s, labels={'x': 'City', 'y': 'No. of Restaurant'})
-  return fig
 
 
-def state_famous_cuisines(state_df):
-  cuisines = state_df[0].value_counts().head(10)
-  fig = px.pie( values=cuisines, names=cuisines.index, title='Most Popular Cuisines')
-  return fig
-
-
-def city_famous_cuisines(state_df):
-  cuisines = state_df[0].value_counts().head(10)
-  fig = px.pie( values=cuisines, names=cuisines.index, title='Most Popular Cuisines')
-  return fig
-
-def locality_famous_cuisines(state_df):
-  cuisines = state_df[0].value_counts().head(10)
-  fig = px.pie( values=cuisines, names=cuisines.index, title='Most Popular Cuisines')
-  return fig
-
-
-def res_type(df,restaurant):
-  res_df = df[df.res_name== restaurant]
-  cuisines = res_df['type'].value_counts()
-  fig = px.pie( values=cuisines,names=cuisines.index,hole=0.7)
-  return fig
-
-
-def res_rating(df,restaurant):
-  res_famous_food = df[df.name == restaurant]
-  fig = px.histogram(res_famous_food, x='aggregate_rating', nbins=10)
-  return fig
 
 
 def res_distance(df,res1,res2):
@@ -191,38 +137,9 @@ def res_price_range(df,id):
   fig = px.pie(state_df, values=price_count, names=price_count.index,hole=0.6)
   return fig
 
-def lun_dinn(df,id):
-  lunch = 0
-  dinner = 0
-  res_name = df[df.res_id == id]['name']
-  res_name = list(res_name)[0]
-  res = df[df.name == res_name]
-  for i in res['highlights']:
-    i = i[2:-2]
-    if 'Lunch' in i:
-      lunch += 1
-    else:
-      dinner += 1
-  l = ['Lunch', 'Dinner']
-  v = [lunch, dinner]
-  fig = px.pie(values=v, names=l, hole=0.7)
-  return fig
 
-def cuisines_wise_state(x,y):
-  fig = px.bar(x=x , y=y, labels={'x': 'State', 'y': 'No. of Restaurant'})
-  fig.update_layout(xaxis={'categoryorder': 'total descending'})
-  return fig
 
-def cuisines_wise_city(x,y):
-  fig = px.bar(x=x, y=y, labels={'x': 'City', 'y': 'No. of Restaurant'})
-  fig.update_layout(xaxis={'categoryorder': 'total descending'})
-  return fig
 
-def cuisines_wise_locality(df):
-  df.columns = ['Locality','No. of Restaurant']
-  fig = px.bar(data_frame=df,x='Locality', y='No. of Restaurant' , labels={'x': 'Locality', 'y': 'No. of Restaurant'})
-  fig.update_layout(xaxis={'categoryorder': 'total descending'})
-  return fig
 
 def mul_rest(df4, lat, long):
   n = 0
@@ -246,29 +163,7 @@ def mul_rest(df4, lat, long):
     n += 1
   return my_map3
 
-def highlights(df4, lat, long, h):
-  n = 0
-  my_map3 = folium.Map(location=[lat[n], long[n]], zoom_start='13')
-  for i in lat:
-    try:
-      p = df4['name'][n]
-      if h in df4['highlights'][n]:
-        if df4['price_range'][n] == 1:
-          color = 'green'
-        elif df4['price_range'][n] == 2:
-          color = 'blue'
-        elif df4['price_range'][n] == 3:
-          color = 'pink'
-        else:
-          color = 'red'
-        folium.Marker([lat[n], long[n]],
-                      popup=p, icon=folium.Icon(color=color)).add_to(my_map3)
 
-    except:
-      pass
-
-    n += 1
-  return my_map3
 
 
 
@@ -294,34 +189,3 @@ def mul_rest_rating(df4,lat,long):
   return my_map3
 
 
-def locality_count(df):
-  fig = px.bar(x=df.index,y=df,labels={'x':'Locality','y':'No. of Restaurant'})
-  return fig
-
-def veg_nveg(veg,nveg,lveg,lnveg):
-  fig = px.pie(names=['Veg','Non-Veg'],values=[veg,nveg], color_discrete_map={'Veg':'g', 'Non-Veg':'r'})
-  return fig
-
-def lveg(lveg,lnveg):
-  fig1 = px.pie(values=[lveg, lnveg], names=['Veg', 'Non-Veg'])
-  return fig1
-
-def alcohol(alco,nalco):
-  fig1 = px.pie(values=[alco, nalco], names=['Alcohol', 'No-Alcohol'],hole=0.7)
-  return fig1
-
-def smoke(alco,nalco):
-  fig1 = px.pie(values=[alco, nalco], names=['Smoking Area', 'No-Smoking Area'],hole=0.7)
-  return fig1
-
-def timings_charts(df):
-  fig = px.bar(x=df.index, y=df, labels={'x': 'Timings', 'y': 'Count'})
-  return fig
-
-def dance(alco,nalco):
-  fig1 = px.pie(values=[alco, nalco], names=['Dance Floor Available', 'Dance Floor Not Available'],hole=0.7)
-  return fig1
-
-def parking(alco,nalco):
-  fig1 = px.pie(values=[alco, nalco], names=['Free Parking Available', 'Free Parking Not Available'],hole=0.7)
-  return fig1

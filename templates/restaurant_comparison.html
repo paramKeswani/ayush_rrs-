@@ -4,155 +4,181 @@
     <meta charset="UTF-8">
     <title>Restaurant Comparison</title>
     <script src="https://cdn.plot.ly/plotly-2.30.1.min.js" charset="utf-8"></script>
-</head>
-<body>
-    <header>
-        <nav>
-            <ul>
-
-                <li><a href="{{ url_for('restaurant_comparison') }}">Restaurant Comparison</a></li>
-                <li><a href="{{ url_for('restaurant_on_map') }}">Restaurant on Map</a></li>
-                <li><a href="{{ url_for('restaurant_recommendation') }}">Restaurant Recommendation</a></li>
-            </ul>
-        </nav>
-        <style>
-
-    body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-        background-color: #f2f2f2;
-        background-image: url('https://source.unsplash.com/1600x900/?restaurant');
-        background-size: cover;
-        background-position: center;
-    }
-
-    h1 {
-        text-align: center;
-        color: #fff;
-        margin-top: 50px;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-    }
-
-    form {
-        max-width: 600px;
-        margin: 0 auto;
-        padding: 20px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        background-color: rgba(255, 255, 255, 0.8);
-        box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-
-    label {
-        font-weight: bold;
-    }
-
-    select, button {
-        padding: 8px;
-        margin: 5px 0;
-        width: 100%;
-        border: 1px solid #ccc;
-        border-radius: 3px;
-    }
-
-    button {
-        background-color: #4CAF50;
-        color: white;
-        border: none;
-        cursor: pointer;
-    }
-
-    button:hover {
-        background-color: #45a049;
-    }
-
-    h2 {
-        margin-top: 40px;
-        text-align: center;
-        color: #fff;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-    }
-
-    #cost-comparison, #rating-comparison {
-        max-width: 800px;
-        margin: 20px auto;
-        background-color: rgba(255, 255, 255, 0.8);
-        padding: 20px;
-        border-radius: 5px;
-        box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-
-
-        </style>
-    </header>
-
-    <h1>Restaurant Comparison</h1>
-    <form method="post" id="restaurant-form" action="{{ url_for('restaurant_comparison') }}">
-        <label for="state">State:</label>
-        <select id="state" name="state">
-            <option value="Karnataka">Karnataka</option>
-        </select>
-
-        <label for="city">City:</label>
-        <select id="city" name="city">
-            <option value="Bangalore">Bangalore</option>
-        </select>
-
-        <label for="restaurant1">Restaurant 1:</label>
-        <select id="restaurant1" name="restaurant1">
-            <option value="{{ selected_restaurant1 or '' }}">{{ selected_restaurant1 or 'Select Restaurant' }}</option>
-            {% for restaurant in restaurant_name1 %}
-            <option value="{{ restaurant }}">{{ restaurant }}</option>
-            {% endfor %}
-        </select>
-
-        <label for="restaurant2">Restaurant 2:</label>
-        <select id="restaurant2" name="restaurant2">
-            <option value="{{ selected_restaurant2 or '' }}">{{ selected_restaurant2 or 'Select Restaurant' }}</option>
-            {% for restaurant in restaurant_name1 %}
-            <option value="{{ restaurant }}">{{ restaurant }}</option>
-            {% endfor %}
-        </select>
-
-        <button type="submit">Compare Restaurants</button>
-    </form>
-
-    {% if graphJSON1 and graphJSON2 %}
-    <h2>Rating Comparison</h2>
-    <div id="cost-comparison"></div>
-    <script>
-        var costComparisonDiv = document.getElementById('cost-comparison');
-        var graphJSON1 = {{ graphJSON1 | safe }};
-        Plotly.newPlot(costComparisonDiv, graphJSON1, {});
-    </script>
-
-    <h2>Average Cost for Two Comparison</h2>
-    <div id="rating-comparison"></div>
-    <script>
-        var ratingComparisonDiv = document.getElementById('rating-comparison');
-        var graphJSON2 = {{ graphJSON2 | safe }};
-        Plotly.newPlot(ratingComparisonDiv, graphJSON2, {});
-    </script>
-    {% endif %}
-
-    <script>
-        // Function to reset form fields after submission
-        function resetForm() {
-            document.getElementById("restaurant-form").reset();
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f2f2f2;
+            background-image: url('https://source.unsplash.com/1600x900/?restaurant');
+            background-size: cover;
+            background-position: center;
         }
 
-        // Submit event listener
-        document.getElementById("restaurant-form").addEventListener("submit", function(event) {
-            // Prevent default form submission
-            event.preventDefault();
+        header {
+            background-color: black;
+            padding: 10px;
+            border-radius: 0 0 10px 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-            // Submit the form
-            this.submit();
+        header nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: flex-end;
 
-            // Reset the form fields
-            resetForm();
-        });
-    </script>
+        }
+
+        header nav ul li {
+            margin-left: 20px;
+        }
+
+        header nav ul li:first-child {
+            margin-left: 0;
+        }
+
+        header nav ul li a {
+            text-decoration: none;
+            color: #fff;
+        }
+
+        h1 {
+            text-align: center;
+            color: #fff;
+            margin-top: 50px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        form {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        select, button {
+            padding: 8px;
+            margin: 5px 0;
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        h2 {
+            margin-top: 40px;
+            text-align: center;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        #cost-comparison,
+        #rating-comparison {
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <nav>
+        <ul>
+            <li><a href="{{ url_for('restaurant_comparison') }}">Restaurant Comparison</a></li>
+            <li><a href="{{ url_for('restaurant_on_map') }}">Restaurant on Map</a></li>
+            <li><a href="{{ url_for('restaurant_recommendation') }}">Restaurant Recommendation</a></li>
+        </ul>
+    </nav>
+</header>
+
+<h1>Restaurant Comparison</h1>
+<form method="post" id="restaurant-form" action="{{ url_for('restaurant_comparison') }}">
+    <label for="state">State:</label>
+    <select id="state" name="state">
+        <option value="Karnataka">Karnataka</option>
+    </select>
+
+    <label for="city">City:</label>
+    <select id="city" name="city">
+        <option value="Bangalore">Bangalore</option>
+    </select>
+
+    <label for="restaurant1">Restaurant 1:</label>
+    <select id="restaurant1" name="restaurant1">
+        <option value="{{ selected_restaurant1 or '' }}">{{ selected_restaurant1 or 'Select Restaurant' }}</option>
+        {% for restaurant in restaurant_name1 %}
+        <option value="{{ restaurant }}">{{ restaurant }}</option>
+        {% endfor %}
+    </select>
+
+    <label for="restaurant2">Restaurant 2:</label>
+    <select id="restaurant2" name="restaurant2">
+        <option value="{{ selected_restaurant2 or '' }}">{{ selected_restaurant2 or 'Select Restaurant' }}</option>
+        {% for restaurant in restaurant_name1 %}
+        <option value="{{ restaurant }}">{{ restaurant }}</option>
+        {% endfor %}
+    </select>
+
+    <button type="submit">Compare Restaurants</button>
+</form>
+
+{% if graphJSON1 and graphJSON2 %}
+<h2>Rating Comparison</h2>
+<div id="cost-comparison"></div>
+<script>
+    var costComparisonDiv = document.getElementById('cost-comparison');
+    var graphJSON1 = {{ graphJSON1 | safe }};
+    Plotly.newPlot(costComparisonDiv, graphJSON1, {});
+</script>
+
+<h2>Average Cost for Two Comparison</h2>
+<div id="rating-comparison"></div>
+<script>
+    var ratingComparisonDiv = document.getElementById('rating-comparison');
+    var graphJSON2 = {{ graphJSON2 | safe }};
+    Plotly.newPlot(ratingComparisonDiv, graphJSON2, {});
+</script>
+{% endif %}
+
+<script>
+    function resetForm() {
+        document.getElementById("restaurant-form").reset();
+    }
+
+    document.getElementById("restaurant-form").addEventListener("submit", function(event) {
+
+        event.preventDefault();
+
+
+        this.submit();
+
+        resetForm();
+    });
+</script>
 </body>
 </html>

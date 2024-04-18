@@ -3,48 +3,123 @@
 <head>
     <meta charset="UTF-8">
     <title>Restaurant On Map</title>
+    <link rel="stylesheet" href="style.css">
     <script src="https://cdn.plot.ly/plotly-2.30.1.min.js" charset="utf-8"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('https://source.unsplash.com/1600x900/?restaurant');
+            background-size: cover;
+            background-position: center;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        header {
+            background-color: black;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            text-align: right;
+
+        }
+
+        nav ul li {
+            display: inline;
+            margin-left: 10px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #fff;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        form {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        select, button {
+            padding: 10px;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        #cost-comparison, #rating-comparison {
+            margin-top: 50px;
+            text-align: center;
+        }
+        button{
+            font-weight:bold;
+            font-size: 12px;
+            padding: 5px 10px;
+            width:40%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+          }
+
+    </style>
 </head>
 <body>
-    <header>
-        <nav>
-            <ul>
+    <div class="container">
+        <header>
+            <nav>
 
-                <li><a href="{{ url_for('restaurant_comparison') }}">Restaurant Comparison</a></li>
-                <li><a href="{{ url_for('restaurant_on_map') }}">Restaurant on Map</a></li>
-                <li><a href="{{ url_for('restaurant_recommendation') }}">Restaurant Recommendation</a></li>
-            </ul>
-        </nav>
-    </header>
+                <ul>
+                    <li><a href="{{ url_for('restaurant_comparison') }}">Restaurant Comparison</a></li>
+                    <li><a href="{{ url_for('restaurant_on_map') }}">Restaurant on Map</a></li>
+                    <li><a href="{{ url_for('restaurant_recommendation') }}">Restaurant Recommendation</a></li>
+                </ul>
+            </nav>
+        </header>
 
-    <h1>Restaurant On Map</h1>
-    <form action="{{ url_for('restaurant_on_map') }}" method="post">
-        <label for="state">Select State:</label>
-        <select name="state" id="state">
-        <option value="karnataka"> Karnataka </option>
-        </select><br><br>
-        <label for="city">Select City:</label>
-        <select name="city" id="city">
-            <option value="Bangalore"> Bangalore</option>
-        </select><br><br>
-        <label for="loc">Choose Locality</label>
-        <select name="loc" id="loc">
-            {% for loc in loc_list %}
-            <option value="{{ loc }}" >{{ loc }}</option>
-            {% endfor %}
-        </select><br><br>
-        <button type="submit">Submit</button>
-    </form>
+        <h1>Restaurant On Map</h1>
+        <form action="{{ url_for('restaurant_on_map') }}" method="post">
+            <label for="state">Select State:</label>
+            <select name="state" id="state">
+                <option value="karnataka"> Karnataka </option>
+            </select><br><br>
+            <label for="city">Select City:</label>
+            <select name="city" id="city">
+                <option value="Bangalore"> Bangalore</option>
+            </select><br><br>
+            <label for="loc">Choose Locality</label>
+            <select name="loc" id="loc">
+                {% for loc in loc_list %}
+                <option value="{{ loc }}" >{{ loc }}</option>
+                {% endfor %}
+            </select><br><br>
+            <button type="submit">Submit</button>
+        </form>
 
-    <h2> Restaurant in {{locality}} on basis of price range</h2>
-    <div id="cost-comparison">
-        {{map1_html | safe}}
+        <h2> Restaurant in {{locality}} on basis of price range</h2>
+        <div id="cost-comparison">
+            {{map1_html | safe}}
+        </div>
+
+        <h2>Average Cost for Two Comparison </h2>
+        <div id="rating-comparison">
+            {{map2_html | safe}}
+        </div>
     </div>
-
-    <h2>Average Cost for Two Comparison </h2>
-    <div id="rating-comparison">
-        {{map2_html | safe}}
-    </div>
-
 </body>
 </html>

@@ -3,18 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-<header>
-        <nav>
-            <ul>
 
-                <li><a href="{{ url_for('restaurant_comparison') }}">Restaurant Comparison</a></li>
-                <li><a href="{{ url_for('restaurant_on_map') }}">Restaurant on Map</a></li>
-                <li><a href="{{ url_for('restaurant_recommendation') }}">Restaurant Recommendation</a></li>
-            </ul>
-        </nav>
-    </header>
-
-      <style>
+    <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -27,8 +17,8 @@
             min-height: 100vh;
         }
 
-        .navbar {
-            background-color: #333;
+        header {
+            background-color: black;
             color: #fff;
             padding: 10px;
             border-radius: 10px 10px 0 0;
@@ -37,61 +27,35 @@
             align-items: center;
         }
 
-        .navbar .left {
-            display: flex;
-            align-items: center;
-            flex: 1;
+        header ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
         }
 
-        .navbar .right {
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            flex: 1;
-        }
-
-        .navbar a {
-            color: #fff;
-            text-decoration: none;
+        header ul li {
+            display: inline-block;
             margin-left: 20px;
         }
 
-        .logo {
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin-right: 20px;
+        header ul li:first-child {
+            margin-left: 0;
+        }
+
+        header a {
+            text-decoration: none;
+            color: #fff;
         }
 
         .container {
             width: 95%;
             max-width: 1000px;
-            padding: 10px;
-            background-color: rgba(255, 255, 255, 0.7);
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.8);
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-            display: flex;
-            justify-content: space-between;
             margin: auto;
-            margin-top: 3px;
-        }
-
-        .left-panel,
-        .right-panel {
-            flex: 1;
-            padding: 20px;
-            border-radius: 10px;
-        }
-
-        .left-panel {
-            margin-right: 10px;
-            width:50%;
-
-          }
-
-        .right-panel {
-            margin-left: 10px;
-            color: #007bff;
-            font-weight: bolder;
+            margin-top: 20px;
         }
 
         h1 {
@@ -101,6 +65,7 @@
         }
 
         form {
+            text-align: center;
             margin-bottom: 30px;
         }
 
@@ -127,203 +92,170 @@
             border-color: #007bff;
         }
 
-        input {
-            background-color: rgb(236, 104, 104);
+        button {
+            font-weight: bold;
+            font-size: 14px;
+            padding: 10px;
+            width: 40%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            background-color: #007bff;
             color: #fff;
+            border: none;
             cursor: pointer;
             transition: background-color 0.3s ease;
         }
 
-
+        button:hover {
+            background-color: #0056b3;
+        }
 
         .card-container {
-          display: flex;
-          flex-direction: column; /* Display cards in a single column */
-          gap: 20px;
-      }
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
 
-      .card {
-          background-color: #f9f9f9;
-          padding: 20px;
-          border-radius: 10px;
-          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-          width: 80%; /* Each card takes up the full width */
-          font-family: 'Arial', sans-serif;
-          color: #333;
-      }
+        .card {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            font-family: 'Arial', sans-serif;
+            color: #333;
+        }
 
-      .card h3 {
-          margin-top: 0;
-          margin-bottom: 10px;
-      }
+        .card h3 {
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
 
-      .card p {
-          margin: 0;
-          margin-bottom: 8px;
-      }
-      button{
-        font-weight:bold;
-        font-size: 12px;
-        padding: 5px 10px;
-        width:40%;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-      }
+        .card p {
+            margin: 0;
+            margin-bottom: 8px;
+        }
 
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 30px;
+        }
 
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
 
+        th {
+            background-color: #f2f2f2;
+        }
     </style>
-
-
 </head>
 <body>
 
-<form method="post">
-<label for="cuisines">Cuisines</label>
-<!--<input type="text" id="firstname" name="fname" placeholder="firstname">-->
-    <select name="cuisines" id="cuisines">
-  <option value="North Indian">North Indian</option>
-  <option value="Chinese">Chinese</option>
-  <option value="South Indian">South Indian</option>
-  <option value="Indian">Indian</option>
-        <option value="Pizzas">Pizzas</option>
-        <option value="Continental">Continental</option>
-        <option value="Italian">Italian</option>
-        <option value="American">American</option>
-        <option value="Arabian">Arabian</option>
-        <option value="Asian">Asian</option>
-</select>
-   <label for="currentlocation">Current Location</label>
-    <select name="currentlocation" id="currentlocation">
-  <option value="Rajajinagar">Rajajinagar</option>
-  <option value="Basavanagudi">Basavanagudi</option>
-  <option value="Koramangala">Koramangala</option>
-  <option value="BRIGADE ROAD">Brigade Road</option>
-        <option value="Seshadripuram">Seshadripuram</option>
-        <option value="Basaveshwara Nagar">Basaveshwar Nagar</option>
-        <option value="Central Bangalore">Central Bangalore</option>
-        <option value="Railway Parallel Road">Railway Parallel Road</option>
-        <option value="Mysore Road">Mysore Road</option>
-        <option value="MALLESHWARAM">Malleshwaram</option>
-        <option value="Nagarbhavi">Nagarbhavi</option>
-  <option value="Richmond Town">Richmond Town</option>
+<header>
+    <div class="logo">Restaurant</div>
+    <nav>
+        <ul>
+            <li><a href="{{ url_for('restaurant_comparison') }}">Restaurant Comparison</a></li>
+            <li><a href="{{ url_for('restaurant_on_map') }}">Restaurant on Map</a></li>
+            <li><a href="{{ url_for('restaurant_recommendation') }}">Restaurant Recommendation</a></li>
+        </ul>
+    </nav>
+</header>
 
-  <option value="BTM Layout">BTM Layout</option>
-        <option value="High Grounds">High Grounds</option>
-        <option value="MG Road">MG Road</option>
-        <option value="Vasant Nagar RK">Vasanth Nagar</option>
+<div class="container">
+    <form method="post">
+        <label for="cuisines">Cuisines</label>
+        <select name="cuisines" id="cuisines">
+            <option value="North Indian">North Indian</option>
+            <option value="Chinese">Chinese</option>
+            <option value="South Indian">South Indian</option>
+            <option value="Indian">Indian</option>
+            <option value="Pizzas">Pizzas</option>
+            <option value="Continental">Continental</option>
+            <option value="Italian">Italian</option>
+            <option value="American">American</option>
+            <option value="Arabian">Arabian</option>
+            <option value="Asian">Asian</option>
+        </select>
 
-        <option value="Jayanagar">Jaya Nagar</option>
-        <option value="Frazer Town">Frazer Town</option>
-    </select>
+        <label for="currentlocation">Current Location</label>
+        <select name="currentlocation" id="currentlocation">
+            <option value="Rajajinagar">Rajajinagar</option>
+            <option value="Basavanagudi">Basavanagudi</option>
+            <option value="Koramangala">Koramangala</option>
+            <option value="BRIGADE ROAD">Brigade Road</option>
+            <option value="Seshadripuram">Seshadripuram</option>
+            <option value="Basaveshwara Nagar">Basaveshwar Nagar</option>
+            <option value="Central Bangalore">Central Bangalore</option>
+            <option value="Railway Parallel Road">Railway Parallel Road</option>
+            <option value="Mysore Road">Mysore Road</option>
+            <option value="MALLESHWARAM">Malleshwaram</option>
+            <option value="Nagarbhavi">Nagarbhavi</option>
+            <option value="Richmond Town">Richmond Town</option>
+            <option value="BTM Layout">BTM Layout</option>
+            <option value="High Grounds">High Grounds</option>
+            <option value="MG Road">MG Road</option>
+            <option value="Vasant Nagar RK">Vasanth Nagar</option>
+            <option value="Jayanagar">Jaya Nagar</option>
+            <option value="Frazer Town">Frazer Town</option>
+        </select>
 
-    <label for="location">Location</label>
-    <select name="location" id="location">
-   <option value="Rajajinagar">Rajajinagar</option>
-  <option value="Basavanagudi">Basavanagudi</option>
-  <option value="Koramangala">Koramangala</option>
-  <option value="BRIGADE ROAD">Brigade Road</option>
-        <option value="Seshadripuram">Seshadripuram</option>
-        <option value="Basaveshwara Nagar">Basaveshwar Nagar</option>
-        <option value="Central Bangalore">Central Bangalore</option>
-        <option value="Railway Parallel Road">Railway Parallel Road</option>
-        <option value="Mysore Road">Mysore Road</option>
-        <option value="MALLESHWARAM">Malleshwaram</option>
-        <option value="Nagarbhavi">Nagarbhavi</option>
-  <option value="Richmond Town">Richmond Town</option>
+        <label for="location">Location</label>
+        <select name="location" id="location">
+            <option value="Rajajinagar">Rajajinagar</option>
+            <option value="Basavanagudi">Basavanagudi</option>
+            <option value="Koramangala">Koramangala</option>
+            <option value="BRIGADE ROAD">Brigade Road</option>
+            <option value="Seshadripuram">Seshadripuram</option>
+            <option value="Basaveshwara Nagar">Basaveshwar Nagar</option>
+            <option value="Central Bangalore">Central Bangalore</option>
+            <option value="Railway Parallel Road">Railway Parallel Road</option>
+            <option value="Mysore Road">Mysore Road</option>
+            <option value="MALLESHWARAM">Malleshwaram</option>
+            <option value="Nagarbhavi">Nagarbhavi</option>
+            <option value="Richmond Town">Richmond Town</option>
+            <option value="BTM Layout">BTM Layout</option>
+            <option value="High Grounds">High Grounds</option>
+            <option value="MG Road">MG Road</option>
+            <option value="Vasant Nagar RK">Vasanth Nagar</option>
+            <option value="Jayanagar">Jaya Nagar</option>
+            <option value="Frazer Town">Frazer Town</option>
+        </select>
 
-  <option value="BTM Layout">BTM Layout</option>
-        <option value="High Grounds">High Grounds</option>
-        <option value="MG Road">MG Road</option>
-        <option value="Vasant Nagar RK">Vasanth Nagar</option>
+        <label for="dishcategory">Dish Category</label>
+        <select name="dishcategory" id="dishcategory">
+            <option value="nonveg">Veg</option>
+            <option value="nonveg">Non Veg</option>
+        </select>
 
-        <option value="Jayanagar">Jaya Nagar</option>
-        <option value="Frazer Town">Frazer Town</option>   </select>
+        <button type="submit">Predict</button>
+    </form>
 
-    <label for="dishcategory">Dish Category</label>
-    <select name="dishcategory" id="dishcategory">
-        <option value="nonveg">Veg</option>
-        <option value="nonveg">Non Veg</option>
-
-    </select>
-
-
-<button type="submit">predict</button>
-
-</form>
-
-<h1>Top rated restaurants According To Your Cuisines</h1>
-<table>
-  <tr>
-
-    <th>Restaurant Name</th>
-    <th>Rating</th>
-    <th>Cuisine</th>
-      <th> url</th>
-
-
-  </tr>
-
-
-
- {% for res in res_data %}
-  <tr>
-    <td>{{ res.res_name }}</td>
-    <td>{{ res.rating }}</td>
-    <td>{{ cuisines }}</td>
-      <td>{{res.res_link}}</td>
-  </tr>
-  {% endfor %}
-
-</table>
-
-<!--code for adding data to a table from a form -->
-
-
-<!--        <form action="">-->
-<!--            <label for="date">Date: </label>-->
-<!--            <input type="date" id="date">-->
-<!--            <br>-->
-<!--            -->
-<!--            <label for="desc">Description: </label>-->
-<!--            <input type="text" id="desc">-->
-<!--            <br>-->
-<!--            -->
-<!--            <label for="amount">Amount: </label>-->
-<!--            <input type="text" id="amount">-->
-<!--            <br>-->
-<!--            -->
-<!--            <input type="button" id="submit" value="Submit">-->
-<!--            <br>-->
-<!--        </form>-->
-<!--        -->
-<!--        <table id="table">-->
-<!--            <tr>-->
-<!--                <th>Date</th>-->
-<!--                <th>Description</th>-->
-<!--                <th>Amount</th>-->
-<!--            </tr>-->
-<!--        </table>-->
-<!--    -->
-<!--        <script type="text/javascript">-->
-<!--            -->
-<!--            document.getElementById("submit").onclick=function()-->
-<!--            {-->
-<!--                document.getElementById("table").style.display="block";-->
-<!--                -->
-<!--                var table = document.getElementById("table");-->
-<!--                var row = table.insertRow(-1);-->
-<!--                var date = row.insertCell(0);-->
-<!--                var desc = row.insertCell(1);-->
-<!--                var amt = row.insertCell(2);-->
-<!--                date.innerHTML = document.getElementById("date").value;-->
-<!--                desc.innerHTML = document.getElementById("desc").value;-->
-<!--                amt.innerHTML = document.getElementById("amount").value;-->
-<!--                -->
-<!--                return false;-->
-<!--            }-->
-<!--        -->
-<!--        </script>-->
-
+    <h1>Top rated restaurants According To Your Cuisines</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Restaurant Name</th>
+                <th>Rating</th>
+                <th>Cuisine</th>
+                <th>URL</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for res in res_data %}
+            <tr>
+                <td>{{ res.res_name }}</td>
+                <td>{{ res.rating }}</td>
+                <td>{{ cuisines }}</td>
+                <td>{{ res.res_link }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 
 </body>
 </html>
